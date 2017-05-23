@@ -1,0 +1,30 @@
+\chapter{Methodology}
+\label{chap:methods}
+Four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a professional guitar player with different performance actions of the performance depending on a given mood. \\
+After this step, transcription of each individual string will be computed applying non-negative matrix factorization~\cite{OGrady2009}. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.\\
+Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... \\
+Several machine learning algorithms - i.e. \textit{artificial neural networks} (ANNs), \textit{decision trees} (DTs), \textit{support vector machines} (SVMs), \textit{k-nearest neighbours} (k-NN) - will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece
+
+\begin{figure}
+  \caption{\textit{Darn that dream} 8 beats manually corrected}
+  \centering
+    \includegraphics[width=0.7\textwidth]{Figures/Darn_8b_corrected.pdf}
+\end{figure}
+
+\section{Data acquisition}
+\section{Hexaphonic guitar transcription}
+\input{Tables/guitar_strings}
+
+\section{Feature extraction}
+\input{Tables/chord_extensions}
+
+\subsection{Note Descriptors}
+\input{Tables/note_descriptors}
+
+\subsection{Performance to score alignment}
+\subsection{Performance actions}
+\section{Machine Learning modelling}
+
+\newpage
+
+
