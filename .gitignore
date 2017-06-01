@@ -1,0 +1,9 @@
+MasterThesis.pdf
+*.aux
+*.dvi
+*.lof
+*.lot
+*.log
+*.out
+*.toc
+*.gz
