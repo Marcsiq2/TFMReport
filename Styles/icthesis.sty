@@ -80,6 +80,7 @@
 }
 
 \newenvironment{dedication}{
+\pagenumbering{roman}%
   \clearpage
   \small
   \linespread{1.5}
@@ -91,7 +92,7 @@
 }
 
 \def\preface{
-    \pagenumbering{gobble}
+    
     \pagestyle{plain}
     \doublespacing
      \setcounter{tocdepth}{2}
@@ -100,6 +101,7 @@
     \listoffigures
     \cleardoublepage
     \listoftables
+    \cleardoublepage 
 }
 
 \def\body{

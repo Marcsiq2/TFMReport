@@ -7,10 +7,12 @@
 \usepackage{wasysym}
 \usepackage{setspace}
 \usepackage{tocloft}
+\usepackage{caption}
+\usepackage{emptypage}
 
 \usepackage{enumitem}
-\usepackage{chngcntr }
-\usepackage[toc,page]{appendix}
+\usepackage{chngcntr}
+\usepackage[page,toc,titletoc,title]{appendix}
 \usepackage[T1]{fontenc}
 \usepackage[nottoc]{tocbibind}
 \usepackage[compact]{titlesec}
@@ -19,8 +21,8 @@
 \titlespacing{\subsubsection}{0pt}{1ex}{0ex}
 
 
-\counterwithout{figure}{chapter}
-\counterwithout{table}{chapter}
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
