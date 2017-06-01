@@ -3,17 +3,18 @@
 Four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a professional guitar player with different performance actions of the performance depending on a given mood. \\
 After this step, transcription of each individual string will be computed applying non-negative matrix factorization~\cite{OGrady2009}. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.\\
 Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... \\
-Several machine learning algorithms - i.e. \textit{artificial neural networks} (ANNs), \textit{decision trees} (DTs), \textit{support vector machines} (SVMs), \textit{k-nearest neighbours} (k-NN) - will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece
+Several machine learning and feature selection algorithms will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece.
 
-\begin{figure}
-  \caption{\textit{Darn that dream} 8 beats manually corrected}
-  \centering
-    \includegraphics[width=0.7\textwidth]{Figures/Darn_8b_corrected.pdf}
-\end{figure}
 
 \section{Data acquisition}
+In order to obtain hexaphonic recordings and get each string nicely separated we used the Roland GK-3 divided pickup that is easily attached to any steel-stringed electric guitar and acts as a sound transduction device. It is able to separate very good the sound from each string and delivers accurate performance data. \\
+However, the output of this pickup consists of a 13 pin DIN cable that allows to connect the guitar to guitar synthesizers such as Roland's popular GR-55 and at the same time to fed electrically the pickup. So, in order to be able to record each string separately we need to adapt the pickup output so the sound of each string can be inputted to the computer through an independent input chanel of an audio interface.\\
+To do this, a Breakout Box circuit was built by I.Angulo~\cite{Angulo2016} for his master's thesis last year so we reused it. The final box has an input for the 13 pin DIN cable and 6 separate Jack connector cables are outputted, one for each string. Also, two batteries are needed inside the box in order to fed the pickup.
+
+
+
 \section{Hexaphonic guitar transcription}
-\input{Tables/guitar_strings}
+
 
 \section{Feature extraction}
 \input{Tables/chord_extensions}
@@ -22,6 +23,13 @@ Several machine learning algorithms - i.e. \textit{artificial neural networks} (
 \input{Tables/note_descriptors}
 
 \subsection{Performance to score alignment}
+
+
+\begin{figure}
+  \caption{\textit{Darn that dream} 8 beats manually corrected}
+  \centering
+    \includegraphics[width=0.7\textwidth]{Figures/Darn_8b_corrected.pdf}
+\end{figure}
 \subsection{Performance actions}
 \section{Machine Learning modelling}
 \cleardoublepage
