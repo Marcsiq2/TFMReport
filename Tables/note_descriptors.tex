@@ -1,12 +1,10 @@
-
 \begin{table}
-
 \centering
-  \caption[Features extracted from music scores]{Features extracted from music scores – in the fifth row, in the column headed \textit{Formula}, \textit{bpb} means beats per bar according to the time signature.}
+  \caption[Complete list of descriptors extracted from music scores.]{Complete list of descriptors extracted from music scores.}
   \label{tab:note_descriptors}
    \makebox[\textwidth][c]{
   \footnotesize
-  \begin{tabular}{l l l l p{2.5cm} }
+  \begin{tabular}{l c c c p{2.5cm} }
     \hline 
     Descriptor & Abbreviation & Units & Formula & Range \\ \hline
     
@@ -17,7 +15,8 @@
  	Onset in bar & $obm_n$ & Beats & $ob_0\%bpb$ & [0,+bpb] \\
  	Pitch & $p_n$ & Semitones & $p_0$ & [1,127] \\
  	Chroma & $ch_n$ & Semitones & $p_0\%12$ & [0,11] \\
- 	Energy & $v_n$ & MIDI vel & $v_0$ & [1,127] \\ \hline 
+ 	Energy & $v_n$ & MIDI vel & $v_0$ & [1,127] \\ 
+    String & $str_n$ & String num & $channel_0$ & [1,6] \\\hline 
     
 	Prev. duration & $pds_n$ & Seconds & $ds_{-1}$ & [0,+$\infty$] \\
  	Prev. duration & $pdb_n$ & Beats & $db_{-1}$ & [0,+$\infty$] \\
@@ -27,9 +26,12 @@
  	Next interval & $nint_n$ & Semitones & $p_1-p_0$ & [-60,60] \\
  	Prev. inter-onset dist. & $piod_n$ & Seconds & $os_0-os_{-1}$ & [0,+$\infty$] \\
  	Next. inter-onset dist. & $piod_n$ & Seconds & $os_1-os_0$ & [0,+$\infty$] \\
- 	Narmour & $nar1_n$ & Label & $nar(p_{-1},p_0,p_1)$ & \{P, D, R, ID, (P), (R), (ID) \\
-    & $nar2_n$ &  & $nar(p_{-2},p_{-1},p_0)$ & VR, IR, VP, IP, (VR), (IR), (VP), (IP) \\
-	& $nar3_n$ & & $nar(p_0,p_1,p_2)$ & ,dyadic, 'monadic, none\} \\ \hline
+ 	Narmour & $nar1_n$ & Label & $nar(p_{-1},p_0,p_1)$ & [P, D, R, ID]\\
+    & $nar2_n$ &  & $nar(p_{-2},p_{-1},p_0)$ & [VR, IR, VP, IP] \\
+	& $nar3_n$ & & $nar(p_0,p_1,p_2)$ & [dyadic, monadic, none] \\
+    Is a Chord & $ich_n$ & Boolean & $isChord_0$ & \{true, false\} \\
+    Is a Pedal & $pdl_n$ & Boolean & $pdl_0$ & \{true, false\} \\
+    Simultaneous notes & $sim_n$ & Number & $simult_0$ & [0,+$\infty$] \\ \hline
     
     Measure & $m_n$ & Bars & $m_0$ & [0,+$\infty$] \\
     Tempo & $t_n$ & Bpm & $t_0$ & [30,260] \\
@@ -39,13 +41,13 @@
  	Chord root & $chr_n$ & Semitones & $chr_0$ & [0,11] \\
     Chord type & $cht_n$ & Label & $cht_0$  & \{+, 6, 7, 7\#11, 7\#5, 7\#9, 7alt, 7$\flat$5, 7$\flat$9, Maj7, dim, dim7, m, m6, m7, m7$\flat$5, major\} \\
 	Note to chord & $n2ch_n$ & Semitones & $ch_0-chr_0$ & [0,11] \\
- 	Is chord note & $ichn_n$ & Boolean & $isChNote(chr_0,cht_0,ch_0)$ & \{true, false\} \\
+ 	Is chord note & $ichn_n$ & Boolean & $isChNote$ & \{true, false\} \\
     Is a Chord & $ich_n$ & Boolean & $isChord_0$ & \{true, false\} \\
     Is a Pedal & $pdl_n$ & Boolean & $pdl_0$ & \{true, false\} \\
     Simultaneous notes & $sim_n$ & Number & $simult_0$ & [0,+$\infty$] \\
  	Metrical strength & $mtr_n$ & Label & $metStr_0$ & \{Very strong, Strong, Weak, Very weak\} \\
  	Phrase & $ph_n$ & Label & $phrase_0$ & \{initial, middle, final\} \\
-    String & $str_n$ & String num & $str_0$ & [1,6] \\
+ 
 
     \hline
 

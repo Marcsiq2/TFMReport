@@ -1,36 +1,64 @@
 \chapter{Methodology}
 \label{chap:methods}
-Four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a professional guitar player with different performance actions of the performance depending on a given mood. \\
-After this step, transcription of each individual string will be computed applying non-negative matrix factorization~\cite{OGrady2009}. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.\\
-Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... \\
+Four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a guitar player with different performance actions of the performance. 
+
+After this step, transcription of each individual string will be computed applying non-negative matrix factorization~\cite{OGrady2009}. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.
+
+Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... 
+
 Several machine learning and feature selection algorithms will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece.
 
 
 \section{Data acquisition}
-In order to obtain hexaphonic recordings and get each string nicely separated we used the Roland GK-3 divided pickup that is easily attached to any steel-stringed electric guitar and acts as a sound transduction device. It is able to separate very good the sound from each string and delivers accurate performance data. \\
-However, the output of this pickup consists of a 13 pin DIN cable that allows to connect the guitar to guitar synthesizers such as Roland's popular GR-55 and at the same time to fed electrically the pickup. So, in order to be able to record each string separately we need to adapt the pickup output so the sound of each string can be inputted to the computer through an independent input chanel of an audio interface.\\
-To do this, a Breakout Box circuit was built by I.Angulo~\cite{Angulo2016} for his master's thesis last year so we reused it. The final box has an input for the 13 pin DIN cable and 6 separate Jack connector cables are outputted, one for each string. Also, two batteries are needed inside the box in order to fed the pickup.
+In order to obtain hexaphonic recordings and get each string nicely separated we used the Roland GK-3 divided pick-up that is easily attached to any steel-stringed electric guitar and acts as a sound transducer device. It is able to separate very good the sound from each string and delivers accurate performance data.
 
+However, the output of this pick-up consists of a 13 pin DIN cable that allows to connect the guitar to guitar synthesizers such as Roland's popular GR-55 and at the same time to fed electrically the pick-up. So, in order to be able to record each string separately we need to adapt the pick-up output so the sound of each string can be inputted to the computer through an independent input channel of an audio interface.
 
+To do this, a Breakout Box circuit was built by I.Angulo~\cite{Angulo2016} for his master's thesis last year so we reused it. The final box has an input for the 13 pin DIN cable and 6 separate Jack connector cables are outputted, one for each string. Also, two batteries are needed inside the box in order to fed the pick-up. 
+
+In this study, the final data set consists of 3 audio recordings (one recording of \textit{Darn that dream} by Jimmy Van Heusen and Eddie De.Lange and two recordings of \textit{Suite en La} by Manuel M. Ponce) resulting in a total of 1414 notes recorded by an amateur guitarist and their corresponding music scores saved as xml file using Muse Score 2. Each of these notes was characterized by a set of descriptors as explained in the following sections.  
 
 \section{Hexaphonic guitar transcription}
+The aim of this section is to obtain machine readable (and understandable) representation from the audio recordings in order to be able to compute descriptors and performance actions. So, the audio signal from each string from the guitar was automatically transcribed into a MIDI format, in order to obtain a note representation based on pitch, onset, duration and offset for each note. This step was based on the previous work of Bantula, Giraldo and Ramírez~\cite{bantula2016}. However, the algorithm has been modified a bit in order to correctly transcribe the hexaphonic audio (that contain lickage from the other strings) instead of simple monophonic ones.
 
+For doing this, we first need a fundamental frequency detection in order to obtain the pitch of each string. The original algorithm used the YIN algorithm, however, in order to improve the system we changed it to Melodia which offers more robustness against the lickage from other strings and helps to detect the main pitch present in the signal. In order to provide a better F0 detection, we also tuned the parameters of this algorithm. The minimum and maximum frequency (the range) of the detector was set differently to each string according to the frequencies that a guitar can produce. As can be seen in table~\ref{tab:guitar_strings} we considered from each string a range of one octave because in this particular recordings and scores the guitarist never passes the twelfth fret.
+
+\input{Tables/guitar_strings}
+
+The frequency pitch profile obtained from Melodia is rounded to a MIDI note number, and the power envelope of the signal is used to apply an adaptive noise gate in order to filter out none pitched sounds. That power envelope was also used in order to compute MIDI velocity (energy was linearly mapped to a value from 0 to 127). 
+
+Following the algorithm proposed by Bantula, a rule based filter is applied in order to remove short notes and gaps merging them with corresponding neighbour notes based on a cognitive perspective of the perception of time.
+
+Following previous step, onsets and offsets are detected from differentiating the cleaned pitch profile. This means for a pitch remove next one, so the changes in pitch become positive or negative peaks. Positive ones (above a threshold) are labelled as onsets and negative ones (below a threshold) are labelled as offsets. Duration is computed by subtracting the offset to the onset.
+
+After all this process, a few manual corrections were performed by changing pitch, eliminating notes or time stretching the performance in order to have a better alignment with the score. Afterwards, all six transcriptions (one from each string) were merged in order to obtain a single MIDI file from the performance. MIDI channel was used in order to label the notes according to the string where were played.
 
 \section{Feature extraction}
-\input{Tables/chord_extensions}
+In this section we describe how we analysed the music scores in order to extract multiple descriptors for each note. Afterwards, performance to score alignment was computed and performance actions such as onset deviation or energy ratio were extracted.
 
 \subsection{Note Descriptors}
+Feature extraction from the music scores was performed following an approach similar to that of Giraldo~\cite{Giraldo2016} but extended and computationally adapted to polyphonic scores, in which each note is characterized by its \textit{nominal}, \textit{neighbouring} and \textit{contextual} properties, taking into account both horizontal (time or melodic) and vertical (simultaneous or harmonic) axis. The complete list of the descriptors extracted from the music scores can be found in Table~\ref{tab:note_descriptors}.
+
 \input{Tables/note_descriptors}
+
+\begin{itemize}
+\item \textbf{Nominal}: This descriptors refer to the intrinsic properties of score notes. So to say, this descriptors are needed in term to define completely a note. \textit{Duration} (computed from offset and onsets) and \textit{onset} are given both in seconds and beats, as the descriptor in seconds depends on the tempo of the piece. \textit{Onset in bar} refers to the position of the onset related to the beats per bar measure. If its 1 the first beat on the bar, and so on. The \textit{pitch} is directly the MIDI note number, and the \textit{chroma} is the pitch modulus 12, so to say, the pitch class of the note, the pitch without taking into account octave changes. Energy descriptor gives us how loud is the note played (the loudness), and its directly taken from MIDI velocity (how fast the note is played). Finally, \textit{string} number is also extracted for each note directly from the MIDI channel.
+
+\item \textbf{Neighbouring}: This descriptors refer to the relations of the note with its neighbouring or simultaneous notes. Each note is characterized by the \textit{Previous duration} and \textit{Next duration} given both in seconds and beats. Also \textsc{Previous interval} and \textit{Next interval} is given in semitones. \textit{Inter-onset distance} refers to the onset difference between current and previous or next note. \textit{Simultaneous notes} counts the number of simultaneous notes to the current note within a given thresholds.
+
+Following the work of Bantula~\cite{bantula2016} on piano polyphonic music, notes have been also labelled as \textit{chord notes} or \textit{pedal notes} depending on the simultaneity of other notes.
+
+In this neighbouring category of descriptors, categorization based on the implication-realization (I-R) model of \textit{Narmour} has been computed.  This model parses melodies and obtains for each note a label depending on the previous and next notes. This computation has also been adapted in order to take into account polyphonic melodies. 
+
+\item \textbf{Contextual}: 
+
+\end{itemize}
 
 \subsection{Performance to score alignment}
 
 
-\begin{figure}
-  \caption{\textit{Darn that dream} 8 beats manually corrected}
-  \centering
-    \includegraphics[width=0.7\textwidth]{Figures/Darn_8b_corrected.pdf}
-\end{figure}
 \subsection{Performance actions}
+
 \section{Machine Learning modelling}
 \cleardoublepage
 
