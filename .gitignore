@@ -7,3 +7,5 @@ MasterThesis.pdf
 *.out
 *.toc
 *.gz
+*.bbl
+*.blg
