@@ -9,7 +9,8 @@
 \usepackage{tocloft}
 \usepackage[margin=1.5cm]{caption}
 \usepackage{emptypage}
-
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
 \usepackage{enumitem}
 \usepackage{chngcntr}
 \usepackage[page,toc,titletoc,title]{appendix}
@@ -42,6 +43,9 @@
 \newcommand{\normallinespacing}{\renewcommand{\baselinestretch}{1.5} \normalsize}
 \newcommand{\mediumlinespacing}{\renewcommand{\baselinestretch}{1.2} \normalsize}
 \newcommand{\narrowlinespacing}{\renewcommand{\baselinestretch}{1.0} \normalsize}
+
+\usepackage{array,multirow}
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
 
 \newtheorem{definition}{Definition}[chapter]
 \newtheorem{theorem}{Theorem}[chapter]

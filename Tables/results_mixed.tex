@@ -1,17 +1,21 @@
 \begin{table}
 \centering
-\caption[Results mixing songs for Train/Test]{Results mixing songs for Train/Test. Whole song Datasets have been used in order to train or test. Algorithm used: Decision Tree. Shown values correspond to Correlation Coefficients.}
+\caption[Results mixing songs for Train/Test]{Results mixing songs for Train/Test. Whole song Datasets have been used in order to train or test. Shown values correspond to Correlation Coefficients.}
 \label{tab:mixed_energy}
 \footnotesize
-\begin{tabular} {llcc}
+\begin{tabular} {llccHHcc}
 \\ \hline
-Train & Test & energy\_rat & onset\_dev	 \\ \hline
-'Darn' & 'Suite' & 0.013 & 0.064 \\
-'Darn' & 'Suite2' & 0.091 & 0.183 \\
-'Suite' & 'Darn' & 0.017 & 0.140 \\
-'Suite' & 'Suite2' &  0.324 & 0.392 \\
-'Suite2' & 'Darn' & 0.043 & 0.099 \\
-'Suite2' & 'Suite' & 0.240 &  0.384 \\
+
+%% & \multicolumn{2}{c}{$k_1NN$}
+
+ \multirow{2}{1cm}{Train} &  \multirow{2}{1cm}{Test} & \multicolumn{2}{c}{D.Tree} & & & \multicolumn{2}{c}{ANN}\\ 
+ &  & energy & onset & energy & onset & energy & onset	 \\ \hline
+'Darn' & 'Suite' & 0.013 & 0.156 & 0.110 & 0.069 & 0.047 & 0.008 \\
+'Darn' & 'Suite2' & 0.091 & 0.183 & 0.018 & 0.177 & 0.033 & 0.075 \\
+'Suite' & 'Darn' & 0.017 & 0.140 & 0.333  & 0.11 & 0.107 & 0.032 \\
+'Suite' & 'Suite2' &  0.324 & 0.392 & 0.215 & 0.338 & 0.148 & 0.253 \\
+'Suite2' & 'Darn' & 0.043 & 0.099 & 0.061 & 0.1672 & 0.079 & 0.027 \\
+'Suite2' & 'Suite' & 0.240 &  0.384 & 0.2316 & 0.349 & 0.190 & 0.227 \\
 \hline
 \end{tabular} 
 \footnotesize

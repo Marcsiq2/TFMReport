@@ -1,13 +1,17 @@
 \chapter{Methodology}
 \label{chap:methods}
-Four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a guitar player with different performance actions of the performance. 
+In figure~\ref{fig:diagram} we present a block diagram of the whole system from where we can see that four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a guitar player with different performance actions of the performance. 
+
+\begin{figure}[ht!]
+\caption{Block diagram of the whole system.}
+\label{fig:diagram}
+\centering
+\includegraphics[width=\textwidth]{Figures/Diagram.pdf}
+\end{figure}
 
 After this step, transcription of each individual string will be computed applying non-negative matrix factorization~\cite{OGrady2009}. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.
 
-Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... 
-
-Several machine learning and feature selection algorithms will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece.
-
+Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... Afterwards, several machine learning and feature selection algorithms will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece.
 
 \section{Data acquisition}
 In order to obtain hexaphonic recordings and get each string nicely separated we used the Roland GK-3 divided pick-up that is easily attached to any steel-stringed electric guitar and acts as a sound transducer device. It is able to separate very good the sound from each string and delivers accurate performance data.
@@ -21,13 +25,21 @@ In this study, the final data set consists of 3 audio recordings (one recording 
 \section{Hexaphonic guitar transcription}
 The aim of this section is to obtain machine readable (and understandable) representation from the audio recordings in order to be able to compute descriptors and performance actions. So, the audio signal from each string from the guitar was automatically transcribed into a MIDI format, in order to obtain a note representation based on pitch, onset, duration and offset for each note. This step was based on the previous work of Bantula, Giraldo and Ramírez~\cite{bantula2016}. However, the algorithm has been modified a bit in order to correctly transcribe the hexaphonic audio (that contain lickage from the other strings) instead of simple monophonic ones.
 
-For doing this, we first need a fundamental frequency detection in order to obtain the pitch of each string. The original algorithm used the YIN algorithm, however, in order to improve the system we changed it to Melodia which offers more robustness against the lickage from other strings and helps to detect the main pitch present in the signal. In order to provide a better F0 detection, we also tuned the parameters of this algorithm. The minimum and maximum frequency (the range) of the detector was set differently to each string according to the frequencies that a guitar can produce. As can be seen in table~\ref{tab:guitar_strings} we considered from each string a range of one octave because in this particular recordings and scores the guitarist never passes the twelfth fret.
+For doing this, we first need a fundamental frequency detection in order to obtain the pitch of each string. The original algorithm used the YIN algorithm~\cite{Cheveigne2002}, however, in order to improve the system we changed it to Melodia which offers more robustness against the lickage from other strings and helps to detect the main pitch present in the signal. In order to provide a better F0 detection, we also tuned the parameters of this algorithm. The minimum and maximum frequency (the range) of the detector was set differently to each string according to the frequencies that a guitar can produce. As can be seen in table~\ref{tab:guitar_strings} we considered from each string a range of one octave because in this particular recordings and scores the guitarist never passes the twelfth fret.
 
 \input{Tables/guitar_strings}
+The power envelope of the signal is used to apply an adaptive noise gate in order to filter out none pitched sounds. That power envelope was also used in order to compute MIDI velocity (energy was linearly mapped to a value from 0 to 127). Finally, the filtered frequency pitch profile obtained is rounded to a MIDI note number.
 
-The frequency pitch profile obtained from Melodia is rounded to a MIDI note number, and the power envelope of the signal is used to apply an adaptive noise gate in order to filter out none pitched sounds. That power envelope was also used in order to compute MIDI velocity (energy was linearly mapped to a value from 0 to 127). 
+In figure~\ref{fig:transcription} we can see the four stages of the process: we start from the audio (a), we obtain a pitch profile using Melodia (b) and using an adaptative threshold over the audio wave envelope (c) we obtain a filtered pitch profile.
 
 Following the algorithm proposed by Bantula, a rule based filter is applied in order to remove short notes and gaps merging them with corresponding neighbour notes based on a cognitive perspective of the perception of time.
+
+\begin{figure}[ht!]
+\caption{One string automatic transcription}
+\label{fig:transcription}
+\centering
+\includegraphics[width=\textwidth]{Figures/transcription.pdf}
+\end{figure}
 
 Following previous step, onsets and offsets are detected from differentiating the cleaned pitch profile. This means for a pitch remove next one, so the changes in pitch become positive or negative peaks. Positive ones (above a threshold) are labelled as onsets and negative ones (below a threshold) are labelled as offsets. Duration is computed by subtracting the offset to the onset.
 
@@ -59,9 +71,29 @@ Others of this descriptors are just computations of the note respecting those fi
 \input{Tables/chord_extensions}
 
 \subsection{Performance to score alignment}
-In this stage, and in order to compute performance actions in the next step, we need to know which notes on the performance correspond to which notes in the score, or mostly known as performance to score alignment. This is done automatically and in this case we will use Dynamic Time Warping (DTW) techniques in order to match performance notes to score. Those notes are alignment depending on a cost function based on onset, pitch and duration deviations. All these deviations can be weighted with a parameter in order to penalize more errors in pitch than in onset i.e. firstly, and previously to applying DTW, performances have been manually time-stretched in order to obtain a better automatic alignment. Then we compute a cost or similarity matrix of the notes on the performance against score notes. Afterwards, an optimal path is computed in order to found the alignment with less global cost.
 
-Some restrictions have been done to this optimal path computation in order to apply some rules. Horizontal paths are forbidden in order to ensure that each performance note has only one score note as reference, and be able to compute embellishments. However, we need to allow vertical paths so one score note can be played as several performance notes.  
+In this stage, and in order to compute performance actions in the next step, we need to know which notes on the performance correspond to which notes in the score, or mostly known as performance to score alignment.
+
+This is done automatically and in this case we will use Dynamic Time Warping (DTW) techniques in order to match performance notes to score. Those notes are alignment depending on a cost function based on onset, pitch and duration deviations. All these deviations can be weighted with a parameter in order to penalize more errors in pitch than in onset i.e. firstly, and previously to applying DTW, performances have been manually time-stretched in order to obtain a better automatic alignment. Then we compute a cost or similarity matrix of the notes on the performance against score notes. As we can see in figure~\ref{fig:suite_cost_matrix} after the cost matrix computation, an optimal path is retrieved in order to found the alignment with less global cost.
+
+\begin{figure}[ht!]
+\caption{\textit{Suite en La} similarity matrix with optimal path,}
+\label{fig:suite_cost_matrix}
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/Suite_en_la_cost.pdf}
+\end{figure}
+
+Some restrictions have been done to this optimal path computation in order to apply some rules. Horizontal paths are forbidden in order to ensure that each performance note has only one score note as reference, and be able to compute embellishments. However, we need to allow vertical paths so one score note can be played as several performance notes. In figure~\ref{fig:darn_auto_alignment} we can see an example of an automatic performance to score alignment. In this plot, score has been shifted two octaves up in order to have a better visualization.
+
+\begin{figure}[ht!]
+\caption{\textit{Darn that dream} performance to score alignment}
+\label{fig:darn_auto_alignment}
+\centering
+\includegraphics[width=\textwidth]{Figures/Darn_that_dream_auto.pdf}
+\end{figure}
+
+
+
 \subsection{Performance actions}
 
 \section{Machine Learning modelling}

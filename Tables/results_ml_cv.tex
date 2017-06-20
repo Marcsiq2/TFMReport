@@ -1,17 +1,27 @@
 \begin{table}
 \centering
-\caption[Results comparing different ML models (10 fold Cross-Validation)]{Results comparing different ML models (10 fold Cross-Validation). Shown values correspond to Correlation Coefficients.}
+\caption[Results comparing different ML models (10 fold Cross-Validation)]{Results comparing different ML models (10 fold Cross-Validation). All datasets correspond to the three datasets merged into one. Shown values correspond to Correlation Coefficients.}
 \label{tab:results_ml_cv}
 \footnotesize
-\begin{tabular} {lcccccccc}
+\begin{tabular} {lcccHcccH}
 \\ \hline
-Dataset (feature) & D.Tree& $k_1NN$ & $k_2NN$ & $k_4NN$ & $k_8NN$ & SVM & ANN & L.Reg \\ \hline
-'Darn (energy\_rat)' & 0.37 & 0.18 &  0.27 & 0.27 &  0.28 &  0.37 & 0.26 & 0.35 \\
-'Darn (onset\_dev)' & 0.70 & 0.35 &  0.42 & 0.48 & 0.52 & 0.57 & 0.47 & 0.56  \\
-'Suite (energy\_rat)' & 0.35 & 0.24 & 0.31 & 0.33 & 0.32 &  0.23 &  0.17 & 0.26 \\
-'Suite (onset\_dev)' & 0.77 & 0.28 & 0.35 & 0.37 & 0.33 & 0.30 & 0.29 & 0.30 \\
-'Suite2 (energy\_rat)' & 0.32 & 0.21 & 0.24 & 0.19 & 0.17 & 0.15 & 0.18 & 0.19 \\
-'Suite2 (onset\_dev)' & 0.83 & 0.43 & 0.48 & 0.45 & 0.51 & 0.44 & 0.40 & 0.44 \\
+\multirow{2}{3cm}{Dataset (feature)} & D.Tree & $k_1NN$ & $k_2NN$ & $k_4NN$ & $k_8NN$ & SVM & ANN & L.Reg \\ 
+& cv/train & cv/train & cv/ train & cv/train & cv/train & cv/train & cv/train & cv/train\\\hline
+
+'Darn (energy)' & 0.37/0.53 & 0.18/1 &  0.27/0.78 & 0.27/0.64 &  0.28/0.52 &  0.37/0.55 & 0.26/0.98 & 0.35/0.58 \\
+'Darn (onset)' & 0.70/0.87 & 0.35/1 &  0.42/0.83 & 0.48/0.75 & 0.52/0.69 & 0.57/0.68 & 0.47/0.99 & 0.56/0.71  \\
+'Suite (energy)' & 0.35/0.59 & 0.24/1 & 0.31/0.77 & 0.33/0.64 & 0.32/0.53 &  0.23/0.38 &  0.17/0.70 & 0.26/0.43 \\
+'Suite (onset)' & 0.77/0.88 & 0.28/1 & 0.35/0.80 & 0.37/0.70 & 0.33/0.53 & 0.30/0.40 & 0.29/0.79 & 0.30/0.44 \\
+'Suite2 (energy)' & 0.32/0.70 & 0.21/1 & 0.24/0.77 & 0.19/0.59 & 0.17/0.45 & 0.19/0.31 & 0.18/0.66 & 0.19/0.39 \\
+'Suite2 (onset)' & 0.83/0.92 & 0.43/1 & 0.48/0.85 & 0.45/0.74 & 0.51/0.85 & 0.44/0.52 & 0.40/0.78 & 0.44/0.55 \\ \hline
+
+'All (energy)' & 0.35/0.51 & 0.22/1 & 0.26/0.78 & 0.27/0.64 & 0.27/0.51 & 0.21/0.33 & 0.23/0.63 & 0.25/0.38 \\
+'All (onset)' & 0.67/0.77 & 0.30/1 & 0.36/0.81 & 0.42/0.69 & 0.42/0.60 & 0.39/0.45 & 0.29/0.67 & 0.40/0.47 \\ 
+'All (energy)'$_{5 features}$ & 0.41/0.50 & 0.30/1 & 0.37/0.80 & 0.39/0.67 & 0.37/0.57 & 0.14/0.21 & 0.14/0.36 & 0.16/0.23 \\
+'All (onset)'$_{5 features}$ & 0.69/0.72 & 0.38/1 & 0.61/0.82 & 0.65/0.79 & 0.65/0.75 & 0.30/0.31 & 0.44/0.43 & 0.31/0.32 \\
+'All (energy)'$_{best subset}$ & 0.41/0.51 & 0.30/1 & 0.37/0.79 & 0.38/0.66  & 0.37/0.57  & 0.16/0.21 & 0.15/039 & 0.15/0.23 \\
+'All (onset)'$_{best subset}$ & 0.69/0.73 & 0.37/1 & 0.58/0.82 & 0.62/0.78 & 0.64/0.73 & 0.30/0.32 & 0.48/0.48 &  0.31\\
+
 \hline
 \end{tabular} 
 \footnotesize
