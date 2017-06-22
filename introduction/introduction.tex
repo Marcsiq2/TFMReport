@@ -9,7 +9,7 @@ Music is a very important part of the life of most people. Depending on our mood
 The study of music expressive performance from a computational point of view consists of characterizing this deviations that a musician introduces in a score. In this work we are going to focus on modelling guitar scores and performances. In this chapter we discuss the motivation of this master's thesis, the main objectives and we explain briefly the structure of this report.
 
 \section{Motivation}
-Most studies about guitar modelling are focused on monophonic performances, the main goal of this master thesis is to enhance the system proposed by Giraldo~\cite{Giraldo2016} in order to compute expressive performance models for polyphonic guitar. The main objective of this thesis will be to define a set a features that are able to extend previous work on monophonic guitar performances to polyphonic performances. Those features need to represent the different nuances in time, duration or volume that the guitarist performs, the added ornamentation present in the temporal or \textit{horizontal} axis (as a monophonic melody), but also should represent the \textit{vertical} axis representing the simultaneity between notes.
+While most studies about guitar modelling are focused on monophonic performances, the main goal of this master thesis is to enhance the system proposed by Giraldo~\cite{Giraldo2016} in order to compute expressive performance models for polyphonic guitar. Treating guitar as a monophonic instrument makes easier a lot of things but limits hardly the polyphonic nature of the instrument. The main objective of this thesis will be to define a set a features that are able to extend previous work on monophonic guitar performances to polyphonic performances. Those features need to represent the different nuances in time, duration or volume that the guitarist performs, the added ornamentation present in the temporal or \textit{horizontal} axis (as a monophonic melody), but also should represent the \textit{vertical} axis representing the simultaneity between notes.
 
 Understanding this little nuances and ornamentation that professional players perform when reading and performing a score could help less trained musicians to improve their playing. This models could also be used by music annotation software in order to generate expressive performances from scores composed by users, and get a better idea on how the score would be performed by a professional guitar player instead a straight forward score to midi conversion.
 
@@ -24,13 +24,14 @@ The aim of this work is to study computationally the little nuances or \textit{P
 The specific objectives are as follows:
 
 \begin{itemize}[noitemsep]
-\item To create a database of hexaphonic recordings played by a guitarist and the corresponding scores.
+\item To create a database of hexaphonic recordings played by a guitarist and their corresponding scores.
 \item To automatically transcribe the audio of the hexaphonic recordings into a machine-readable format (MIDI).
 \item To adapt existing code libraries to extract descriptors from the score which allow us to characterize the notes vertically and horizontally.
 \item To create code libraries which allow us to align and compare the transcribed hexaphonic recordings to the score in order to extract performance actions.
 \item To provide a few manually corrected performance to score alignments.
 \item To generate different models that try to predict performance actions (onset deviation and energy ration) by using Machine Learning techniques.
 \item To analyse which descriptors influence more the accuracy of these models, so to say, which descriptors represent more the behaviour of the musician.
+\item To obtain not only quantitative machine learning results but also qualitative results by surveying different users.
 \end{itemize}
 
 \section{Structure of the report}
