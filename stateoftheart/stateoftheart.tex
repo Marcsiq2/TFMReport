@@ -35,19 +35,12 @@ One of the main difficulties when facing automatic music transcription is given 
 
 While in the monophonic case is practically considered to be a solved problem within the state of the art techniques (Klapuri 2004~\cite{Klapuri2004}). However, polyphonic case is really far from being solved specially for multi-instrumental contexts. The main problems of this case are present when two or more concurrent sounds contain partials that share some frequencies. Knowing in advance the different sources eases a bit the task~\cite{argenti2011}. 
 
+In our case, working with guitar music, transcription process is a difficult task due to the polyphonic nature of the sound it emits.
+As said before, limiting the player to just produce a monophonic sound eases the process as thre exist very good and state of the art approaches such as the autocorrelation method, Yin or spectral peak picking, among others.
 
-
-
-
-
-
-
-
-
-
-
-
-
+However, the main goal of this project is to extend a monophonic system to a polyphonic one, so polyphonic transcription is one of the main tasks of it. Reviewing the literature we find a few approaches for transcribing polyphonic guitar music. Fiss \& Kwasinksi propose a system for automatic guitar audio transcription in real time~\cite{Fiss2011}. This approach is based on the STFT (Short Time Fourier Transform) to compute the spectrogram used to extract information about the peak locations. Afterwards they try to correct the note detector by taking into account the probability of each note being being produced among the six strings of the guitar, and thus, avoiding the ambiguity of polyphonic guitar.
+ 
+As stated above, avoiding polyphony makes the transcription task much easier. So, the idea of capturing and transcribing separately each string makes a lot of sense. Asking the musician to think about the whole song but just playing the notes on one string would probably be very difficult as well as non musical at all. Solving this little problem, O'Grady \& Rickard~\cite{OGrady2009} proposed a solution based on the Roland GK-3 divided pick-up~\cite{gk3} which captures separately each string in order to be processed with a guitar synthesizer and create really strange and creative sounds with it. 
 
 
 
