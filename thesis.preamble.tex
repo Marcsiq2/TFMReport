@@ -22,6 +22,19 @@
 \titlespacing{\subsubsection}{0pt}{1ex}{0ex}
 
 
+%% DRAFT WATERMARK
+\usepackage[printwatermark]{xwatermark}
+\newsavebox\mybox
+\savebox\mybox{\tikz[color=gray,opacity=0.3]\node{DRAFT};}
+\newwatermark*[
+  allpages,
+  angle=45,
+  scale=6,
+  xpos=-35,
+  ypos=15
+]{\usebox\mybox}
+
+
 \counterwithin{figure}{chapter}
 \counterwithin{table}{chapter}
 
