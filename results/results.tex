@@ -1,19 +1,19 @@
 \chapter{Results}
 \label{chap:results}
-In this chapter we are going to present the obtained results using the previous models, both from a quantitative point of view, by measuring correlation coefficient over predicted data and from a qualitative point of view, by surveying a few listeners with predicted and real performance synthesis. Firstly, in section~\ref{sec:features} we are going to apply feature selection in order to see what features are more relevant in order to obtain better prediction for performance actions. In section~\ref{sec:ev_measures} we are going to explain what measures are we going to consider for both results analysis. Finally in section~\ref{sec:ev_results} we present separately the results from both evalutaions.
+In this chapter we are going to present the obtained results using the previous models, both from a quantitative point of view, by measuring correlation coefficient over predicted data and from a qualitative point of view, by surveying a few listeners with predicted and real performance synthesis. Firstly, in section~\ref{sec:ev_measures} we are going to explain what measures are we going to consider for both results analysis. In section~\ref{sec:features} we are going to apply feature selection in order to see what features are more relevant in order to obtain better prediction for performance actions. Finally in section~\ref{sec:ev_results} we present separately the results from both evaluations, quantitative and qualitative.
+
+\section{Evaluation Measures}
+\label{sec:ev_measures}
+For the quantitative evaluation we are going to use Correlation Coefficient as evaluation metric.
+Correlation coefficient tells us how much predicted PAs and computed ones are related. It gives values between -1 and 1, where 0 is no relation, 1 is very strong linear relation and -1 is an inverse linear relation.
 
 \section{Feature Selection}
+\label{sec:features}
 In figure~\ref{tab:feature_selection} we present the Correlation Coefficients (CC) between predicted and actual Performance Actions for Onset deviation and Energy Ratio. In red we show the accuracy for the whole Train dataset and in blue the results with 10 fold Cross-Validation. As we can see, for Cross-validation with just 5 features we achieve the best CC.
 
 \input{Tables/feature_selection}
 \input{Figures/feature_selection}
 
-
-
-\label{sec:features}
-
-\section{Evaluation Measures}
-\label{sec:ev_measures}
 
 \section{Evaluation Results}
 \label{sec:ev_results}
@@ -22,12 +22,15 @@ In figure~\ref{tab:feature_selection} we present the Correlation Coefficients (C
 In table~\ref{tab:results_ml_cv} we show the results comparing different Machine Learning algorithms both with cross-validation and with the whole Train dataset. We present CC for Energy ratio and onset deviation for the whole dataset, for just the best 5 features and also for the best subset of features. As we can see we achieve the best results with Decision Trees and also with just 5 features or the best subset we outperform the normal dataset.
 
 \input{Tables/results_ml_cv}
-\input{Tables/results_ml_tt}
+%\input{Tables/results_ml_tt}
+In table~\ref{tab:results_mixed} we show the results of training with one dataset and testing with another one. This results are generated using decision tree and artificial neural networks as they show to be the best algorithms in table~\ref{tab:results_ml_cv}. As we can see if we train and test with different performances of the same score we achieve a Correlation Coefficient around 0.3. The poor results in the mixed cases are due to over-fitting the model or to very specific performance actions for each song.
 \input{Tables/results_mixed}
 
 \subsection{Qualitative evaluation}
 
-For the qualitative survey, different MIDIs with the model's predictions are generated and then synthesized. We asked people to guess how "human" they were by comparing them with real performances through an on-line survey~\footnote{You can find the survey here: \url{https://marcsiq2.github.io/}}. We asked them to rate from 0 to 100 how "human" the audios where. Results from over 10 participants in figure~\ref{fig:survey} show that people find the score more "human" than the actual performance and predicted score. However, as we obtain very similar results for performance and prediction, we can say that our models predict very well the actual human performances. 
+For the qualitative survey, different MIDIs with the model's predictions are generated and then synthesized. We asked people to guess how "human" they were by comparing them with real performances through an on-line survey~\footnote{You can find the survey here: \url{https://marcsiq2.github.io/}}. We asked them to rate from 0 to 100 how "human" the audios where. Full results can be found at Appendix~\ref{app:survey}. Results from over 10 participants in figure~\ref{fig:survey} show that people find the score more "human" than the actual performance and predicted score. However, as we obtain very similar results for performance and prediction, we can say that our models predict very well the actual human performances. 
+
+Our assumption about why the score synthesis is graded better than the performance or the prediction is that the virtual instrument does not synthesize very well the guitar and when two notes are played with very short inter-onset time it creates very strange artefacts. Moreover, as it is a midi synthesis we are used to hear it very perfect as it always comes from a music score, so introducing those artefacts and time deviations can sound really strange to us, as if the score wasn't well written.
 
 \begin{figure}
 \caption{Results of the on-line survey with performance, predicted and straight score synthesized midis.}
