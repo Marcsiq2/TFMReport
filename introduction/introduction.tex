@@ -4,22 +4,36 @@
 
 
 \label{chap:introduction}
-Music is a very important part of the life of most people. Depending on our mood or moment in the day or lives, music can be understood in very different ways. In some moments we understand music as a simple distraction, a soundtrack to our daily tasks without paying much attention to it. In other moments, when we consciously listen to music we can be very touched and excited by it. This engaging part of music is largely due to the human component added to the performance. Instead of reading a score, musicians play the music on their way, by changing (unconsciously) a lot of "parameters" of it such as intensity, velocity, volume or articulation of each note. 
+Music is a very important part of the life of most people. Depending on our mood or moment in the day or lives, music can be understood in very different ways. In some moments we understand music as a simple distraction, a soundtrack to our daily tasks without paying much attention to it. In other moments, when we consciously listen to music we can be very touched and excited by it. This engaging part of music is largely due to the human component added to the performance. Instead of reading a score, musicians play the music on their way, by changing (unconsciously or consciously if the performer wants to achieve a specific goal) a lot of "parameters" of it such as intensity, velocity, volume or articulation of each note. 
 
-The study of music expressive performance from a computational point of view consists of characterizing this deviations that a musician introduces in a score. In this work we are going to focus on modelling guitar scores and performances. In this chapter we discuss the motivation of this master's thesis, the main objectives and we explain briefly the structure of this report.
+The study of music expressive performance, from a computational point of view, consists of characterizing the  deviations that a musician, when performing a musical piece, introduces in the performance. In this work we are going to focus on modelling guitar scores and performances. In Section~\ref{sec:structure} we briefly explain how this thesis is organized.
+
+\section{Structure of the report}
+\label{sec:structure}
+In this chapter we discuss the motivation of this master's thesis, the main objectives and we explain briefly the structure of this report.
+The rest of this thesis is organized as follows: in Chapter~\ref{chap:sota}, we present some related work in expressive music performance modelling specially focused on polyphonic music. In Chapter~\ref{chap:materials}, the materials used in this work are described. In Chapter~\ref{chap:methods}, we present the proposed methodology. In Chapter~\ref{chap:results}, the evaluation measures and results are presented. We conclude with a brief discussion and provide suggestions for future improvements in Chapter~\ref{chap:discussion}. 
+
+In order to complement this thesis we present 3 Appendices: Appendix~\ref{app:dataset} documenting the dataset used for this work, Appendix~\ref{app:code} documenting the developed code and Appendix~\ref{app:survey} gathering all responses to the On-line Survey.
 
 \section{Motivation}
-While most studies about guitar modelling are focused on monophonic performances, the main goal of this master thesis is to enhance the system proposed by Giraldo~\cite{Giraldo2016} in order to compute expressive performance models for polyphonic guitar. Treating guitar as a monophonic instrument makes easier a lot of things but limits hardly the polyphonic nature of the instrument. The main objective of this thesis will be to define a set of features that are able to extend previous work on monophonic guitar performances to polyphonic performances. Those features need to represent the different nuances in time, duration or volume that the guitarist performs, the added ornamentation present in the temporal or \textit{horizontal} axis (as a monophonic melody), but also should represent the \textit{vertical} axis representing the simultaneity between notes.
+\label{sec:motivation}
+While most studies about guitar modelling are focused on monophonic performances, the aim of this master thesis is to investigate on the modelling of expressiveness in polyphonic (hexaphonic) guitar music. We will base our approach on previous studies by Giraldo~\cite{Giraldo2016} who computed expressive performance models for monophonic jazz guitar. Treating guitar as a monophonic instrument makes easier a lot of things \todo[inline]{Which? "easier a lot" try not to use subjective adjectives... a lot is how much? how can you quantify "a lot"? ...} but limits hardly the polyphonic nature of the instrument. The main objective of this thesis will be to define a set of features extending previous work on monophonic guitar performances to polyphonic performances. Those features aim to represent the different nuances in time, duration or volume that the guitarist introduce when performing a musical piece, the added ornamentation present in the temporal or \textit{horizontal} axis (as a monophonic melody), but also should represent the \textit{vertical} axis representing the simultaneity between notes. 
+\todo[inline]{explain better last sentence}
 
-Understanding this little nuances and ornamentation that professional players perform when reading and performing a score could help less trained musicians to improve their playing. This models could also be used by music annotation software in order to generate expressive performances from scores composed by users, and get a better idea on how the score would be performed by a professional guitar player instead a straight forward score to midi conversion.
+Understanding this little nuances that professional players perform when reading and performing a musical piece could help less trained musicians to improve their playing. This models could also be used by music annotation software in order to generate expressive performances from scores composed by users, and get a better idea on how the score would be performed by a professional guitar player instead a straight forward score to midi conversion.
+
+\todo[inline]{[NEW PARAGRAPH] expected results, possible future directions from the framework, and the data}
 
 \section{Thesis statement}
 In this section we present the main hypothesis of this master's thesis:
 
-\textit{Its possible to adapt and extend music expression analysis on monophonic guitar music to polyphonic guitar. Using information extracted about each note and its musical context and by training models by means of machine learning, we are able to predict little transformations in timing or energy. By synthesizing those artificially generated expressive music performances it would be hard for the listener to differentiate those from the synthesized real performance.}
+% \textit{Its possible to adapt and extend music expression analysis on monophonic guitar music to polyphonic guitar. Using information extracted about each note and its musical context and by training models by means of machine learning, we are able to predict little transformations in timing or energy. By synthesizing those artificially generated expressive music performances it would be hard for the listener to differentiate those from the synthesized real performance.}
+
+\textit{It is possible to computationally capture and model the expressive nuances that a musician introduces when performing a musical piece, taking the polyphonic guitar as a study case.}
+
 
 \section{Objectives}
-The aim of this work is to study computationally the little nuances or \textit{Performance Actions} that musicians do when performing a score, focusing only in polyphonic guitar performances considering both horizontal or melodic axis and vertical or harmonic axis.
+The aim of this work is to study and predict computationally the little nuances or \textit{Performance Actions} that musicians do when performing a musical score, focusing on onset and energy deviations, taking the polyphonic (hexaphonic) guitar as a study case. This study will consider, as explained in section~\ref{sec:motivation}, both horizontal or melodic axis and vertical or harmonic axis.
 
 The specific objectives are as follows:
 
@@ -34,9 +48,5 @@ The specific objectives are as follows:
 \item To obtain not only quantitative machine learning results but also qualitative results by surveying different users.
 \end{itemize}
 
-\section{Structure of the report}
-The rest of this thesis is organized as follows: in Chapter~\ref{chap:sota}, we present some related work in expressive music performance modelling specially focused on polyphonic music. In Chapter~\ref{chap:materials}, the materials used in this work are described. In Chapter~\ref{chap:methods}, we present the proposed methodology. In Chapter~\ref{chap:results}, the evaluation measures and results are presented. We conclude with a brief discussion and provide suggestions for future improvements in Chapter~\ref{chap:discussion}. 
-
-In order to complement this thesis we present 3 Appendices: Appendix~\ref{app:dataset} documenting the dataset used for this work, Appendix~\ref{app:code} documenting the developed code and Appendix~\ref{app:survey} gathering all responses to the On-line Survey.
 \cleardoublepage
 
