@@ -2,11 +2,15 @@
 
 \chapter{Introduction}
 
-
 \label{chap:introduction}
 Music is a very important part of the life of most people. Depending on our mood or moment in the day or lives, music can be understood in very different ways. In some moments we understand music as a simple distraction, a soundtrack to our daily tasks without paying much attention to it. In other moments, when we consciously listen to music we can be very touched and excited by it. This engaging part of music is largely due to the human component added to the performance. Instead of reading a score, musicians play the music on their way, by changing (unconsciously or consciously if the performer wants to achieve a specific goal) a lot of "parameters" of it such as intensity, velocity, volume or articulation of each note. 
 
-The study of music expressive performance, from a computational point of view, consists of characterizing the  deviations that a musician, when performing a musical piece, introduces in the performance. In this work we are going to focus on modelling guitar scores and performances. In Section~\ref{sec:structure} we briefly explain how this thesis is organized.
+% The study of music expressive performance, from a computational point of view, consists of characterizing the  deviations that a musician, when performing a musical piece, introduces in the performance. In this work we are going to focus on modelling guitar scores and performances. In Section~\ref{sec:structure} we briefly explain how this thesis is organized.
+
+Computational modelling of expressive music performance has been widely studied in the past. While previous work in this area has been mainly focused on classical piano music, there has been very little work on guitar music, and such work has focused on monophonic guitar playing. 
+
+In this work, we present a machine learning approach to automatically generate expressive performances from non expressive music scores for polyphonic guitar. We treated guitar as an hexaphonic instrument, obtaining a polyphonic transcription of performed musical pieces. Features were extracted from the scores and performance actions were calculated from the deviations of the score and the performance. Machine learning techniques were used to train computational models to predict the aforementioned performance actions. Qualitative and quantitative evaluations of the models and the predicted pieces were performed. 
+
 
 \section{Structure of the report}
 \label{sec:structure}
@@ -17,12 +21,11 @@ In order to complement this thesis we present 3 Appendices: Appendix~\ref{app:da
 
 \section{Motivation}
 \label{sec:motivation}
-While most studies about guitar modelling are focused on monophonic performances, the aim of this master thesis is to investigate on the modelling of expressiveness in polyphonic (hexaphonic) guitar music. We will base our approach on previous studies by Giraldo~\cite{Giraldo2016} who computed expressive performance models for monophonic jazz guitar. Treating guitar as a monophonic instrument makes easier a lot of things \todo[inline]{Which? "easier a lot" try not to use subjective adjectives... a lot is how much? how can you quantify "a lot"? ...} but limits hardly the polyphonic nature of the instrument. The main objective of this thesis will be to define a set of features extending previous work on monophonic guitar performances to polyphonic performances. Those features aim to represent the different nuances in time, duration or volume that the guitarist introduce when performing a musical piece, the added ornamentation present in the temporal or \textit{horizontal} axis (as a monophonic melody), but also should represent the \textit{vertical} axis representing the simultaneity between notes. 
-\todo[inline]{explain better last sentence}
+While most studies about guitar modelling are focused on monophonic performances, the aim of this master thesis is to investigate on the modelling of expressiveness in polyphonic (hexaphonic) guitar music. We will base our approach on previous studies by Giraldo~\cite{Giraldo2016} who computed expressive performance models for monophonic jazz guitar. Treating guitar as a monophonic instrument limits hardly the polyphonic nature of the instrument, but avoids the problems related to polyphonic music transcription. The main objective of this thesis will be to define a set of features extending previous work on monophonic guitar performances to polyphonic performances. Those features aim to represent the different nuances in time, duration or volume that the guitarist introduce when performing a musical piece, appearing both in the temporal or \textit{horizontal} axis (as a monophonic melody), but also should represent the \textit{vertical} axis representing the simultaneity between notes. The features should represent the variations in time and energy that the performer introduce, and those will depend on the context of the note if it is part of the melody or the harmonic accompaniment.
 
 Understanding this little nuances that professional players perform when reading and performing a musical piece could help less trained musicians to improve their playing. This models could also be used by music annotation software in order to generate expressive performances from scores composed by users, and get a better idea on how the score would be performed by a professional guitar player instead a straight forward score to midi conversion.
 
-\todo[inline]{[NEW PARAGRAPH] expected results, possible future directions from the framework, and the data}
+%\todo[inline]{[NEW PARAGRAPH] expected results, possible future directions from the framework, and the data}
 
 \section{Thesis statement}
 In this section we present the main hypothesis of this master's thesis:

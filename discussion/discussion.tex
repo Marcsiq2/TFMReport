@@ -2,8 +2,12 @@
 \label{chap:discussion}
 
 \section{Discussion}
+...
+
+Our assumption about why the score synthesis is graded better than the performance or the prediction is that the virtual instrument does not synthesize very well the guitar and when two notes are played with very short inter-onset time it creates very strange artefacts. Moreover, as it is a midi synthesis we are used to hear it very perfect as it always comes from a music score, so introducing those artefacts and time deviations can sound really strange to us, as if the score wasn't well written.
 
 \section{Conclusions}
+In this work we have applied machine learning techniques in order to generate models for musical expression in polyphonic guitar music, by training different models for \textit{Onset Deviation} and \textit{Energy Ratio}. We treated polyphonic guitar as an hexaphonic instrument by capturing and transcribing each string separately. We extracted descriptors from the scores in terms of the melodic (Horizontal) as well from the harmonic (Vertical) context. We computed PAs from the aligned transcribed performance and the scores. We trained different models using machine learning techniques. Models were used to predict PAs that later were applied to the scores to be synthesized. Feature selection analysis and accuracy tests were performed to assess models performance. Perceptual tests were conducted on the predicted pieces to rate how close they sound to a human performance. Results indicate that descriptors contain sufficient information to generate our models able to predict performances close to  human ones.
 
 \section{Contributions}
 \begin{itemize}[noitemsep]
