@@ -1,88 +1,110 @@
 \chapter{Methodology}
 \label{chap:methods}
-In figure~\ref{fig:diagram} we present a block diagram of the whole system from where we can see that four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings will be done using the Rolandtec GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage will be a new dataset consisting of hexaphonic recordings recorded by a guitar player with different performance actions of the performance. 
+In Figure~\ref{fig:diagram} we present a block diagram of the whole system from where we can see that four separate stages of this thesis can be defined: data acquisition (guitar recording), transcription, feature extraction and models computation. Expressive hexaphonic guitar recordings were done using the Roland GK-3 divided pick-up, which is able to separate sound from each string~\cite{Angulo2016}. The main output of this first stage is a new dataset consisting of hexaphonic recordings recorded by a guitar player with different performance actions of the performance. 
 
 \begin{figure}[ht!]
-\caption{Block diagram of the whole system.}
-\label{fig:diagram}
 \centering
 \includegraphics[width=\textwidth]{Figures/Diagram.pdf}
+\caption{Block diagram of the whole system.}
+\label{fig:diagram}
 \end{figure}
 
-After this step, transcription of each individual string will be computed. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.
+After this step, transcription of each individual string is computed. After doing a score alignment with the original score and the transcription of the expressive guitar performance, feature extraction needs to be done.
 
-Feature extraction will be performed following an approach in which each note is characterized by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis will take place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... Afterwards, several machine learning and feature selection algorithms will be applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece.
+Feature extraction is performed following an approach in which each note is characterised by its \textit{nominal}, \textit{neighbouring}, and \textit{contextual} properties.  Here is where the most of the research in this thesis takes place:  checking for literature in expressive piano modelling, combining it with previously mentioned features of monophonic expressive guitar modelling,... Afterwards, several machine learning and feature selection algorithms are applied to predict those performance actions (timing, pitch, energy,...) and ornaments introduced by the musician when performing a musical piece.
 
 \section{Data acquisition}
 In order to obtain hexaphonic recordings and get each string nicely separated we used the Roland GK-3 divided pick-up that is easily attached to any steel-stringed electric guitar and acts as a sound transducer device. It is able to separate very good the sound from each string and delivers accurate performance data.
 
-However, the output of this pick-up consists of a 13 pin DIN cable that allows to connect the guitar to guitar synthesizers such as Roland's popular GR-55 and at the same time to fed electrically the pick-up. So, in order to be able to record each string separately we need to adapt the pick-up output so the sound of each string can be inputted to the computer through an independent input channel of an audio interface.
+However, the output of this pick-up consists of a 13 pin DIN cable that allows to connect the guitar to guitar synthesisers such as Roland's popular GR-55 and at the same time to fed electrically the pick-up. So, in order to be able to record each string separately we need to adapt the pick-up output so the sound of each string can be inputted to the computer through an independent input channel of an audio interface.
 
-To do this, a Breakout Box circuit was built by I.Angulo~\cite{Angulo2016} for his master's thesis last year based on the specifications by O'Grady~\cite{OGrady2009}, so we reused it. The final box has an input for the 13 pin DIN cable and 6 separate Jack connector cables are outputted, one for each string. Also, two batteries are needed inside the box in order to fed the pick-up. 
+To do this, a Breakout Box circuit was built by I.Angulo~\cite{Angulo2016} for his master's thesis last year based on the specifications by O'Grady~\cite{OGrady2009}, so we reused it. As we can see in Figure~\ref{fig:gk3}, the final box has an input for the 13 pin DIN cable and 6 separate Jack connector cables are outputted, one for each string. Also, two batteries are needed inside the box in order to fed the pick-up. 
 
-In this study, and as explained in chapter~\ref{chap:materials}, the final dataset consists of 3 audio recordings (one recording of \textit{Darn that dream} and two recordings of \textit{Suite en La}) resulting in a total of 1414 notes recorded by an amateur guitarist and their corresponding music scores saved as xml file using Muse Score 2. In figure~\ref{fig:darn_score} we can see a few bars from the \textit{Darn that dream} score with annotated chords. This score is saved as an xml file in order to characterize each note by a set of descriptors as explained in the following sections.  
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\textwidth]{Figures/gk3.png}
+\caption{Roland GK-3 and Breakout Box setting. (Angulo, 2016)}
+\label{fig:gk3}
+\end{figure}
+
+In this study, and as explained in chapter~\ref{chap:materials}, the final dataset consists of 3 audio recordings (one recording of \textit{Darn that dream} and two recordings of \textit{Suite en La}) resulting in a total of 1414 notes recorded by an amateur guitarist and their corresponding music scores saved as xml files using Muse Score 2. In Figure~\ref{fig:darn_score} we can see a few bars from \textit{Darn that dream} score with annotated chords. This score is saved as an xml file in order to be able to characterise each note by a set of descriptors as explained in the following sections.  
 
 \begin{figure}[ht!]
     \centering
+    \includegraphics[clip, trim=0cm 19cm 0cm 0cm, width=\textwidth]{Figures/Darn_that_dream.pdf}
     \caption{\textit{Darn that dream} first 14 bars with annotated chords.}
-    \label{fig:darn_score}
-    
-        \includegraphics[clip, trim=0cm 19cm 0cm 0cm, width=\textwidth]{Figures/Darn_that_dream.pdf}
-    
+    \label{fig:darn_score}    
 \end{figure}
 
 \section{Hexaphonic guitar transcription}
-The aim of this section is to obtain machine readable (and understandable) representation from the audio recordings in order to be able to compute descriptors and performance actions. So, the audio signal from each string from the guitar was automatically transcribed into a MIDI format, in order to obtain a note representation based on pitch, onset, duration and offset for each note. This step was based on the previous work of Bantula, Giraldo and Ramírez~\cite{bantula2016}. However, the algorithm has been modified a bit in order to correctly transcribe the hexaphonic audio (that contain lickage from the other strings) instead of simple monophonic ones.
+Once we have the six audio input signals, all the processing involved in the transcription is done using Python and Essentia~\cite{bogdanov2013essentia} algorithms. A Python script has been created in which all the steps of the transcription are included, giving the user the option to configure every parameter of it.
 
-For doing this, we first need a fundamental frequency detection in order to obtain the pitch of each string. The original algorithm used the YIN algorithm~\cite{Cheveigne2002}, however, in order to improve the system we changed it to Melodia which offers more robustness against the lickage from other strings and helps to detect the main pitch present in the signal. In order to provide a better F0 detection, we also tuned the parameters of this algorithm. The minimum and maximum frequency (the range) of the detector was set differently to each string according to the frequencies that a guitar can produce. As can be seen in table~\ref{tab:guitar_strings} we considered from each string a range of one octave because in this particular recordings and scores the guitarist never passes the twelfth fret.
+The aim of this section is to obtain machine readable (and understandable) representation from the audio recordings in order to be able to compute descriptors and performance actions. In order to obtain a note representation based on pitch, onset, duration and offset for each note, the audio signal from each string from the guitar is automatically transcribed into a MIDI format. Each signal is independently processed, following the hexaphonic concept in which each string is considered as a monophonic sound source. 
+
+This step is based on the previous work of Bantula, Giraldo and Ramírez~\cite{bantula2016}. However, the algorithm has been modified a bit in order to correctly transcribe the hexaphonic audio (that can contain leakage from the other strings) instead of simple monophonic ones.
+
+For doing this, we first need a fundamental frequency detector in order to obtain the pitch of each string. The original algorithm used the YIN algorithm~\cite{Cheveigne2002}, however, in order to improve the system we changed it to Melodia which offers more robustness against the leakage from other strings and helps to detect the main pitch present in the signal. In order to provide a better F0 detection, we also tuned the parameters of this algorithm. The minimum and maximum frequency (the range) of the detector is set differently to each string according to the frequencies that each guitar string can produce. As can be seen in Table~\ref{tab:guitar_strings} we considered from each string a range of one octave because in this particular recordings and scores the guitarist never passes the twelfth fret (first octave).
 
 \input{Tables/guitar_strings}
-The power envelope of the signal is used to apply an adaptive noise gate in order to filter out none pitched sounds. That power envelope was also used in order to compute MIDI velocity (energy was linearly mapped to a value from 0 to 127). Finally, the filtered frequency pitch profile obtained is rounded to a MIDI note number.
+The power envelope of the signal is used to apply an adaptive noise gate in order to filter out none pitched sounds. That power envelope is also used in order to compute MIDI velocity (energy is linearly mapped to a value from 0 to 127). Finally, the filtered frequency pitch profile obtained is rounded to a MIDI note number.
 
-In figure~\ref{fig:transcription} we can see the four stages of the process: we start from the audio (a), we obtain a pitch profile using Melodia (b) and using an adaptative threshold over the audio wave envelope (c) we obtain a filtered pitch profile.
+In Figure~\ref{fig:transcription} we can see the four stages of the process: we start from the audio (a), we obtain a pitch profile using Melodia (b) and using an adaptive threshold over the audio wave envelope (c) we obtain a filtered pitch profile.
 
 Following the algorithm proposed by Bantula, a rule based filter is applied in order to remove short notes and gaps merging them with corresponding neighbour notes based on a cognitive perspective of the perception of time.
 
 \begin{figure}[ht!]
-\caption{One string automatic transcription}
-\label{fig:transcription}
 \centering
 \includegraphics[width=\textwidth]{Figures/transcription.pdf}
+\caption{One string automatic transcription}
+\label{fig:transcription}
 \end{figure}
 
 
 Following previous step, onsets and offsets are detected from differentiating the cleaned pitch profile. This means for a pitch remove next one, so the changes in pitch become positive or negative peaks. Positive ones (above a threshold) are labelled as onsets and negative ones (below a threshold) are labelled as offsets. Duration is computed by subtracting the offset to the onset.
 
-After all this process, a few manual corrections were performed by changing pitch, eliminating notes or time stretching the performance in order to have a better alignment with the score. Afterwards, all six transcriptions (one from each string) were merged in order to obtain a single MIDI file from the performance. MIDI channel was used in order to label the notes according to the string where were played. In figure~\ref{fig:pianoroll} we can see a pianoroll representation of a transcribed hexaphonic performance, showing each string in a different color.
+After all this process, a few manual corrections were performed by changing pitch, eliminating notes or time stretching the performance in order to have a better alignment with the score. Afterwards, all six transcriptions (one from each string) were merged in order to obtain a single MIDI file from the performance. MIDI channel was used in order to label the notes according to the string where were played. In Figure~\ref{fig:pianoroll} we can see a piano-roll representation of a transcribed hexaphonic performance, showing each string in a different colour.
 
 \begin{figure}[ht!]
-\caption{Pianoroll representation of an hexaphonic performance.}
-\label{fig:pianoroll}
 \centering
-\includegraphics[width=0.8\textwidth]{Figures/pianoroll.pdf}
+\includegraphics[width=0.9\textwidth]{Figures/pianoroll.pdf}
+\caption{Piano-roll representation of an hexaphonic performance.}
+\label{fig:pianoroll}
 \end{figure}
 
 \section{Feature extraction}
-In this section we describe how we analysed the music scores in order to extract multiple descriptors for each note. Afterwards, performance to score alignment was computed and performance actions such as onset deviation or energy ratio were extracted.
+In this section we describe how we analyse the music scores in order to extract multiple descriptors for each note. Afterwards, performance to score alignment is computed and performance actions (\textit{Onset Deviation} and \textit{Energy ratio}) are extracted.
 
 \subsection{Note Descriptors}
 \label{sec:notedescriptors}
-Feature extraction from the music scores was performed following an approach similar to that of Giraldo~\cite{Giraldo2016} but extended and computationally adapted to polyphonic scores, in which each note is characterized by its \textit{nominal}, \textit{neighbouring} and \textit{contextual} properties, taking into account both horizontal (time or melodic) and vertical (simultaneous or harmonic) axis. The complete list of the descriptors extracted from the music scores can be found in Table~\ref{tab:note_descriptors}.
+Feature extraction from the music scores is performed following an approach similar to that of Giraldo~\cite{Giraldo2016} but extended and computationally adapted to polyphonic scores, in which each note is characterised by its \textit{nominal}, \textit{neighbouring} and \textit{contextual} properties, taking into account both horizontal (time or melodic) and vertical (simultaneous or harmonic) axis. The complete list of the descriptors extracted from the music scores can be found in Table~\ref{tab:note_descriptors}.
 
 \input{Tables/note_descriptors}
 
 \begin{itemize}
-\item \textbf{Nominal}: This descriptors refer to the intrinsic or intra-note properties of score notes. So to say, this descriptors are needed in term to define completely a note. \textit{Duration} (computed from offset and onsets) and \textit{onset} are given both in seconds and beats, as the descriptor in seconds depends on the tempo of the piece. \textit{Onset in bar} refers to the position of the onset related to the beats per bar measure. If its 1 the first beat on the bar, and so on. The \textit{pitch} is directly the MIDI note number, and the \textit{chroma} is the pitch modulus 12, so to say, the pitch class of the note, the pitch without taking into account octave changes. Energy descriptor gives us how loud is the note played (the loudness), and its directly taken from MIDI velocity (how fast the note is played). Finally, \textit{string} number is also extracted for each note directly from the MIDI channel.
+\item \textbf{Nominal}: This descriptors refer to the intrinsic or intra-note properties of score notes. So to say, this descriptors are needed in term to define completely a note. \textit{Duration} (computed from offset and onsets) and \textit{Onset} are given both in seconds and beats, as the descriptor in seconds depends on the tempo of the piece. \textit{Onset in bar} refers to the position of the onset related to the beats per bar measure. If its 1 the first beat on the bar, 2 second beat on the bar, and so on. \textit{Pitch} is directly the MIDI note number, and \textit{Chroma} is the pitch modulus 12, so to say, the pitch class of the note, the pitch without taking into account octave changes. \textit{Energy} descriptor gives us how loud is the note played (loudness), and its directly taken from MIDI velocity (how fast the note is played). Finally, \textit{String} number is also extracted for each note directly from the MIDI channel.
 
-\item \textbf{Neighbouring}: This neighbouring or inter-note descriptors refer to the relations of the note with its neighbouring or simultaneous notes. Each note is characterized by the \textit{Previous duration} and \textit{Next duration} given both in seconds and beats. Also \textsc{Previous interval} and \textit{Next interval} is given in semitones. \textit{Inter-onset distance} refers to the onset difference between current and previous or next note. \textit{Simultaneous notes} counts the number of simultaneous notes to the current note within a given thresholds.
+This descriptors need no computation as they are intrinsic properties of each note.
 
-Following the work of Bantula~\cite{bantula2016} on piano polyphonic music, notes have been also labelled as \textit{chord notes} or \textit{pedal notes} depending on the simultaneity of other notes, differentiating between notes that have been played at the same time as a chord and notes that are played as a basis in order to have a melody in top of them.
+\item \textbf{Neighbouring}: neighbouring or inter-note descriptors refer to the relations of the note with its neighbouring or simultaneous notes. Each note is characterised by \textit{Previous duration} and \textit{Next duration} given both in seconds and beats by subtracting previous and next note duration to current one. Also \textit{Previous interval} and \textit{Next interval} is the difference between in pitch between the current note and the next or previous one given in semitones. \textit{Inter-onset distance} refers to the onset difference between current and previous or next note. \textit{Simultaneous notes} counts the number of simultaneous notes to the current note within a given threshold.
 
-In this neighbouring category of descriptors, categorization based on the implication-realization (I-R) model of \textit{Narmour} has been computed.  This model parses melodies and obtains for each note a label depending on the previous and next notes. This computation has also been adapted in order to take into account polyphonic melodies. 
+The computation of Previous and Next note properties is a bit tricky when talking about polyphonic scores. In order to clarify this problem, we will explain it with an example as can be seen in Figure~\ref{fig:first_chord} where we focus in the first bar of \textit{Darn that dream}. From a computational point of view (or from a digital score parser) if we focus on the low G note in the first chord, the next note would be the F$\sharp$ note in the same chord. However, from a musical (or harmonic) point of view, after that low G it comes the low B$\flat$ in the 3rd beat chord. The same happens for the high G note in the second beat. Their next notes can be considered either the low B$\flat$ (parsing the score) or the high E$\flat$ (melodic continuation).
 
-\item \textbf{Contextual}: This descriptors refer to the context, background or properties of the song in which the note appears on. Some of this descriptors, such as \textsc{measure}, \textit{tempo}, \textit{key} or \textit{mode}, are the same for the whole song but may be useful if we merge different datasets into one. \textit{Chord root} and \textit{chord type} refer to the actual chord of that note (labelled manually per bar or per measure in the score).
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[clip, trim=0cm 26cm 14.5cm 1.5cm]{Figures/Darn_that_dream.pdf}
+    \caption{\textit{Darn that dream} first bar.}
+    \label{fig:first_chord}    
+\end{figure}
 
-Others of this descriptors are just computations of the note respecting those first. \textit{Note to key} and \textit{note to chord} refer to the distance in semitones of the actual note both to the general key root of the piece or to the actual chord root. \textit{Is chord note} gives us a boolean label depending if the note is part of those notes pre-defined by the chord root and type as can bee seen in table~\ref{tab:chord_extensions}. \textit{Metrical strength} categorize notes occurring at strong or weak beats within a bar. And \textit{phrase} descriptor labels notes depending on the melodic segmentation approach by Cambouropulos~\cite{Cambouropoulos1997a} into initial, middle and final notes.
+In our case, we decided to opt for the straight digital score parsing. When reading and playing cords with a guitar they are not read as singles notes but as a group, and they are usually played from lower to higher pitch in an \textit{arpeggiated} way. Following this methodology, in the previous example (Figure~\ref{fig:first_chord}, after the low G in the first chord it comes the F$\sharp$ note on top of it with an \textit{Inter-onset distance} of 0 seconds, then B, D, G, B$\flat$, G, and so on. So, parsing chords from bottom to top instead of searching for melodic continuation, in addition to make easier the computation, it helps the system understand chords as a group of ordered notes with an \textit{Inter-onset distance} of 0 seconds. 
+
+Following the work of Bantula~\cite{bantula2016} on piano polyphonic music, notes have been also labelled as \textit{Chord notes} or \textit{Pedal notes} depending on the simultaneity of other notes, differentiating between notes that have been played at the same time as a chord and notes that are played as a basis in order to have a melody in top of them.
+
+In this neighbouring category of descriptors, categorization based on the implication-realization (I-R) model of \textit{Narmour}~\cite{narmour1992analysis} has been also computed.  This model parses melodies and obtains for each note a label depending on the previous and next notes. This computation has also been adapted in order to take into account polyphonic melodies as explained in Figure~\ref{fig:first_chord}. 
+
+\item \textbf{Contextual}: This descriptors refer to the context, background or properties of the song in which the note appears on. Some of this descriptors, such as \textsc{Measure}, \textit{Tempo}, \textit{Key} or \textit{Mode}, are the same for the whole song but may be useful if we merge different datasets (songs) into one. \textit{Chord root} and \textit{Chord type} refer to the actual chord of that note (labelled manually per bar or per measure in the score).
+
+The rest of this descriptors are just computations of each note respecting to those first descriptors. \textit{Note to key} and \textit{Note to chord} refer to the distance in semitones of the actual note both to the general key root of the piece and to the actual chord root. \textit{Is chord note} gives us a boolean label depending if the note is part of those notes pre-defined by the chord root and type as can bee seen in Table~\ref{tab:chord_extensions}. \textit{Metrical strength} categorise notes occurring at strong or weak beats within a bar. And \textit{Phrase} descriptor labels notes depending on the melodic segmentation approach by Cambouropulos~\cite{Cambouropoulos1997a} into initial, middle and final notes.
 
 \end{itemize}
 
@@ -93,27 +115,37 @@ Others of this descriptors are just computations of the note respecting those fi
 
 In this stage, and in order to compute performance actions in the next step, we need to know which notes on the performance correspond to which notes in the score, or mostly known as performance to score alignment.
 
-This is done automatically and in this case we will use Dynamic Time Warping (DTW) techniques in order to match performance notes to score. Those notes are alignment depending on a cost function based on onset, pitch and duration deviations. All these deviations can be weighted with a parameter in order to penalize more errors in pitch than in onset i.e. firstly, and previously to applying DTW, performances have been manually time-stretched in order to obtain a better automatic alignment. Then we compute a cost or similarity matrix of the notes on the performance against score notes. As we can see in figure~\ref{fig:suite_cost_matrix} after the cost matrix computation, an optimal path is retrieved in order to found the alignment with less global cost.
+This is done automatically and in this case we used Dynamic Time Warping (DTW) techniques in order to match performance notes to score. Those notes are aligned depending on a cost function based on onset, pitch and duration deviations. All these deviations can be weighted with a parameter in order to penalise more errors in pitch than in onset i.e. Firstly, and before applying DTW, performances have been manually time-stretched to match the score length in order to obtain a better automatic alignment. Afterwards, we compute a cost or similarity matrix of notes on the performance against score notes. As we can see in Figure~\ref{fig:suite_cost_matrix} after the cost matrix computation, an optimal path is retrieved in order to found the alignment with less global cost.
 
 \begin{figure}[ht!]
+\centering
+\includegraphics[width=0.9\textwidth]{Figures/Suite_en_la_cost.pdf}
 \caption{\textit{Suite en La} similarity matrix with optimal path,}
 \label{fig:suite_cost_matrix}
-\centering
-\includegraphics[width=0.8\textwidth]{Figures/Suite_en_la_cost.pdf}
 \end{figure}
 
-Some restrictions have been done to this optimal path computation in order to apply some rules. Horizontal paths are forbidden in order to ensure that each score note has only one performance note as reference, and be able to compute embellishments. However, we need to allow vertical paths so one performance note can be assigned to several score notes. In figure~\ref{fig:darn_auto_alignment} we can see an example of an automatic performance to score alignment. In this plot, score has been shifted two octaves up in order to have a better visualization.
+Some restrictions have been done to this optimal path computation in order to apply some rules. Horizontal paths are forbidden in order to ensure that each performance note has just one score note as reference. However, we need to allow vertical paths so one score note can be assigned to several performance notes in order to obtain a minimum cost path, to allow the player add ornamentation notes and to ensure that all performance notes have a score match. In Figure~\ref{fig:darn_auto_alignment} we can see an example of an automatic performance to score alignment. In this plot, score has been shifted two octaves up in order to have a better visualization.
 
 \begin{figure}[ht!]
-\caption{\textit{Darn that dream} performance to score alignment}
-\label{fig:darn_auto_alignment}
 \centering
 \includegraphics[width=\textwidth]{Figures/Darn_that_dream_auto.pdf}
+\caption[\textit{Darn that dream} performance to score alignment.]{\textit{Darn that dream} performance to score alignment. (Score notes are shifted two octaves up)}
+\label{fig:darn_auto_alignment}
 \end{figure}
+
+If we zoom in to the first 20 notes (Figure~\ref{fig:darn_20n}) we can see the result of aforementioned restrictions. Each performance note (bottom half, each colour represents one string) has just one score note as reference while score notes can have multiple performance notes assigned. In this plot we can see how chords are usually played in guitar, strumming from low pitch strings to higher ones and not playing all notes simultaneously.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\textwidth]{Figures/Darn_8b_autoalign.pdf}
+\caption{\textit{Darn that dream} first 20 notes performance to score alignment.}
+\label{fig:darn_20n}
+\end{figure}
+
 
 
 \subsection{Performance actions}
-At this point we need to compute the performance actions that will be modelled afterwards using machine learning. This is a simple stage as it only consists in computing variations between score notes and they corresponding performance notes, which alignment was computed in section~\ref{sec:p2salignment}. The two performance actions that we will be modelling in this work are \textit{Onset deviation} and \textit{Energy ratio}:
+At this point we need to compute the performance actions that will be modelled afterwards using machine learning. This is a simple stage as it only consists in computing variations between score notes and they corresponding performance notes, which alignment was computed in Section~\ref{sec:p2salignment}. The two performance actions that we will be modelling in this work are \textit{Onset deviation} and \textit{Energy ratio}:
 
 \begin{itemize}[noitemsep]
 \item \textit{Onset deviation}: This performance action is computed by subtracting each performance note onset (in seconds) to its corresponding score note onset. $$Onset\_dev_i = Ons\_per_j - Ons\_score_i$$
@@ -121,14 +153,14 @@ At this point we need to compute the performance actions that will be modelled a
 $$Energy\_ratio_i = \frac{V\_per_j}{V\_score_i}$$
 \end{itemize}
 
-\textit{Note duration} was also considered to be a performance action of this work, but was finally rejected as the duration is not a characteristic of each note but a default characteristic of each guitar or sound, depending on the decay function of it.
+\textit{Note duration} was also considered to be a performance action of this work, but was finally rejected as the duration is not a characteristic of each note but a default characteristic of each guitar or sound, depending on the decay function of it. As each guitar has its own decay, it can be shortened by muting the strings with the picking hand. However, a guitar decay can not be naturally extended, this is only possible affecting the signal by plugging in the guitar to a driven amplifier, an effects stomp box, or any digital signal processing software.
 
-After modelling these performance actions and in order to compute expressive midis from predicted values we will just add the predicted \textit{Onset deviation} to the score onset and we will multiply the predicted \textit{Energy ratio} by the score energy (or midi velocity).
+After modelling these performance actions and in order to compute expressive midis from predicted values we will just reverse the previous formulas in order to compute \textit{Onsets} and \textit{Energy} from deviations and ratios. Predicted \textit{Onset deviation} is added to the score onset and predicted \textit{Energy ratio} is multiplied by the score energy (or MIDI velocity) in order to obtain predicted Onsets and Energy values.
 
 \section{Machine Learning modelling}
-In this stage we are trying to predict previous performance actions (\textit{Onset deviation} and \textit{Energy ratio}) with all note descriptors computed in section~\ref{sec:notedescriptors}.  We created a dataset (an \texttt{arff} file) for each song and for each performance action. So we have six different datasets, two performances of \textit{Suite en la} and one performance of \textit{Darn that dream}, and we have \textit{Onset deviation} dataset and \textit{Energy ratio} dataset for each performance.
+In this stage we are trying to predict previous performance actions (\textit{Onset deviation} and \textit{Energy ratio}) with all note descriptors computed in Section~\ref{sec:notedescriptors}.  We created a dataset (an \texttt{arff} file) for each song and for each performance action. So we have six different datasets, two performances of \textit{Suite en la} and one performance of \textit{Darn that dream}, and we have \textit{Onset deviation} dataset and \textit{Energy ratio} dataset for each performance.
 
-We also build two bigger datasets (one for \textit{onset deviation} and one for \textit{energy ratio}) by merging all three performances datasets. 
+We also build two bigger datasets (one for \textit{Onset deviation} and one for \textit{Energy ratio}) by merging all three performances datasets. 
 
 In order to model those datasets and obtain predicted performance actions we are going to use Weka and we are going to train and test different machine learning models in order to see which one models better our data. Feature selection will be also done in order to see which features represent better our data.
 \cleardoublepage

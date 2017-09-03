@@ -1,25 +1,33 @@
-\chapter{Discussion}
-\label{chap:discussion}
+\chapter{Conclusions}
+\label{chap:conclusions}
 
-\section{Discussion}
-...
-
-Our assumption about why the score synthesis is graded better than the performance or the prediction is that the virtual instrument does not synthesize very well the guitar and when two notes are played with very short inter-onset time it creates very strange artefacts. Moreover, as it is a midi synthesis we are used to hear it very perfect as it always comes from a music score, so introducing those artefacts and time deviations can sound really strange to us, as if the score wasn't well written.
-
-\section{Conclusions}
-In this work we have applied machine learning techniques in order to generate models for musical expression in polyphonic guitar music, by training different models for \textit{Onset Deviation} and \textit{Energy Ratio}. We treated polyphonic guitar as an hexaphonic instrument by capturing and transcribing each string separately. We extracted descriptors from the scores in terms of the melodic (Horizontal) as well from the harmonic (Vertical) context. We computed PAs from the aligned transcribed performance and the scores. We trained different models using machine learning techniques. Models were used to predict PAs that later were applied to the scores to be synthesized. Feature selection analysis and accuracy tests were performed to assess models performance. Perceptual tests were conducted on the predicted pieces to rate how close they sound to a human performance. Results indicate that descriptors contain sufficient information to generate our models able to predict performances close to  human ones.
+In this work we have applied machine learning techniques in order to generate models for musical expression in polyphonic guitar music, by training different models for \textit{Onset Deviation} and \textit{Energy Ratio}. We treated polyphonic guitar as an hexaphonic instrument by capturing and transcribing each string separately. We extracted descriptors from the scores in terms of the melodic (Horizontal) as well from the harmonic (Vertical) context. We computed PAs from the aligned transcribed performance and the scores. We trained different models using machine learning techniques. Models were used to predict PAs that later were applied to the scores to be synthesised. Feature selection analysis and accuracy tests were performed to assess models performance. Perceptual tests were conducted on the predicted pieces to rate how close they sound to a human performance. Results indicate that descriptors contain sufficient information to generate our models able to predict performances close to  human ones.
 
 \section{Contributions}
+\label{sec:contributions}
+Main contributions of this this Master's thesis are:
 \begin{itemize}[noitemsep]
-\item New problem, as far as we know.
-\item Extended framework from monophonic guitar to polyphonic.
-\item New data-set analysis.
-\item GitHub~\footnote{\url{https://github.com/Marcsiq2/masterthesis}} with all code and data
-\item Paper submitted to \textit{MML 2017 - 10th International Workshop on Machine Learning and Music}
+\item Most of the research in this topic has been carried out in monophonic jazz guitar. As far as
+our knowledge goes it has not been done in polyphonic guitar.
+\item We proposed an new framework extending previous work from monophonic guitar to polyphonic.
+\item We created a new analysed dataset consisting on hexaphonic audio recordings, their corresponding scores, automatic transcriptions and score to performance alignments. 
+\item We provide an On-line repository with all code and data. Please see Appendix~\ref{app:code}.
+\item Our work has shown to have relevance in the research community as it has been accepted at the \textit{MML 2017 - 10th International Workshop on Machine Learning and Music}.
 
 \end{itemize}
 
 \section{Future Work}
+\label{sec:future}
+Future work of this Master's thesis could be:
+\begin{itemize}[noitemsep]
+\item To enlarge our dataset of hexaphonic recordings with their corresponding digital scores in order to have more solid models. 
+\item To study the interpretability of the different models.
+\item To improve the performance to score alignment trying to avoid manual preprocessing time-stretch step.
+\item To study how models generalise into the same musical style, performer,... This means having the same performer performing different pieces and studying variance between pieces or by having the same musical piece played by diverse performers and study how each one performs it.
+\item To study the musical sense behind feature selection.
+\item To study a sequential modelling. Current implementation is note-based so each note is modelled by its own descriptors. By implementing sequential modelling, we would be able to model entire phrases or sequences at once.
+\item To improve our qualitative evaluation (i.e. by improving guitar synthesis)
+\end{itemize}
 
 \cleardoublepage
 

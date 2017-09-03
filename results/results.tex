@@ -1,6 +1,6 @@
 \chapter{Results}
 \label{chap:results}
-In this chapter we are going to present the obtained results using the previous models, both from a quantitative point of view, by measuring correlation coefficient over predicted data and from a qualitative point of view, by surveying a few listeners with predicted and real performance synthesis. Firstly, in section~\ref{sec:ev_measures} we are going to explain what measures are we going to consider for both results analysis. In section~\ref{sec:features} we are going to apply feature selection in order to see what features are more relevant in order to obtain better prediction for performance actions. Finally in section~\ref{sec:ev_results} we present separately the results from both evaluations, quantitative and qualitative.
+In this chapter we are going to present the obtained results using the previous models, both from a quantitative point of view, by measuring correlation coefficient over predicted data and from a qualitative point of view, by surveying a few listeners with predicted and real performance synthesis. Firstly, in Section~\ref{sec:ev_measures} we are going to explain what measures are we going to consider for both results analysis. In Section~\ref{sec:features} we are going to apply feature selection in order to see what features are more relevant in order to obtain better prediction for performance actions. In Section~\ref{sec:ev_results} we present separately the results from both evaluations, quantitative and qualitative. Finally, in Section~\ref{sec:discussion} we discuss the obtained results.
 
 \section{Evaluation Measures}
 \label{sec:ev_measures}
@@ -8,38 +8,90 @@ For the quantitative evaluation we are going to use Correlation Coefficient as e
 
 \section{Feature Selection}
 \label{sec:features}
-In figure~\ref{tab:feature_selection} we present the Correlation Coefficients (CC) between predicted and actual Performance Actions for Onset deviation and Energy Ratio. In red we show the accuracy for the whole Train dataset and in blue the results with 10 fold Cross-Validation. The best accuracy (using CV) was obtained with the set containing the first 5 best ranked features.
 
 \input{Tables/feature_selection}
-\input{Figures/feature_selection}
 
+In Table~\ref{tab:feature_selection} we present for each PA dataset, two different feature selection algorithms. In the middle column, best subset of features is shown and in the right column all features are ranked using Ranker with wrapped Decision Tree. As we can see, for \textit{Onset Deviation} we achieve the best performance with just 7 features out of 35, being those: \textit{Onset in seconds}, \textit{Measure}, \textit{Previous duration in beats}, \textit{Previous duration in seconds}, \textit{Previous inter-onset distance}, \textit{Next inter-onset distance} and \textit{Simultaneous notes}.
+
+For \textit{Energy Ratio} we achieve the best performance with a subset of 8 features out of 35, being those: \textit{Onset in seconds}, \textit{Duration in seconds}, \textit{Previous duration in beats}, \textit{Key}, \textit{Note to key}, \textit{Chord type}, \textit{Metrical Strength} and \textit{Phrase}
+
+In Figure~\ref{fig:feature_selection} we present the Correlation Coefficients (CC) between predicted and actual Performance Actions for Onset deviation and Energy Ratio while adding features by ranking order. In red we show the accuracy for the whole Train dataset and in blue the results with 10 fold Cross-Validation. For both PAs the best accuracy (using CV) was obtained with the set containing the first 5 best ranked features, as adding more features just makes CC decrease.
+
+
+
+\input{Figures/feature_selection}
 
 \section{Evaluation Results}
 \label{sec:ev_results}
-In this section we present both quantitative and qualitative results. The proposed approach was quantitatively evaluated by measuring \textit{Correlation Coefficient} (CC) obtained with the models studied and qualitatively evaluated by asking listeners to compare predicted and real performances.
+In this section we present both quantitative and qualitative results. The proposed approach was quantitatively evaluated by measuring \textit{Correlation Coefficient} (CC) obtained with the models studied and qualitatively evaluated by asking listeners to compare predicted and real performances. 
 
 \subsection{Quantitative evaluation}
-In table~\ref{tab:results_ml_cv} we show the results comparing different Machine Learning algorithms both with cross-validation and with the whole Train dataset. We present CC for Energy ratio and onset deviation for the whole dataset, for just the best 5 features and also for the best subset of features. As we can see we achieve the best results with Decision Trees and also with just 5 features or the best subset we outperform the normal dataset.
+In Table~\ref{tab:results_ml_cv} we show the results comparing different Machine Learning algorithms both with cross-validation and with the whole Train dataset. In the top half of the table we present the results by performance (1 \textit{Darn that dream} and 2 \textit{Suite en La}) and by Performance Action (\textit{Onset deviation} and \textit{Energy ratio}). In the bottom half of the table we merged those three performances into a big dataset and we present the results for this complete large ("All") dataset, for this large dataset with just the 5 top features ("$All_{5features}$", and for this large dataset with the best subset of features ("$All_{bestsubset}$").
+
+Several machine learning algorithms have been tested for each one of this cases of study. From left to right: Decision Trees, K-Nearest Neighbours (K=1), K-Nearest Neighbours (K=2), K-Nearest Neighbours (k=4), Support Vector Machines and Artificial Neural Networks. All this models were computed using Weka.
 
 \input{Tables/results_ml_cv}
+
+
 %\input{Tables/results_ml_tt}
-In table~\ref{tab:results_mixed} we show the results of training with one dataset and testing with another one. This results are generated using decision tree and artificial neural networks as they show to be the best algorithms in table~\ref{tab:results_ml_cv}. As we can see if we train and test with different performances of the same score we achieve a Correlation Coefficient around 0.3. The poor results in the mixed cases are due to over-fitting the model or to very specific performance actions for each song.
+In Table~\ref{tab:results_mixed} we show the results of training with one dataset and testing with another one. This results are generated using Decision Trees and Artificial Neural Networks as they show to be the best algorithms in Table~\ref{tab:results_ml_cv}. As we can see, the results are very poor as we are mixing two very different music styles (a Jazz standard and a Classical piece). We also can see that if we train and test with different performances of the same score we achieve a Correlation Coefficient around 0.3 which might indicate that PAs are more performance dependant than piece dependant.
 \input{Tables/results_mixed}
 
 \subsection{Qualitative evaluation}
 
-For the qualitative survey, several synthesized pieces obtained by the models were compared to both the score (dead pan synthesis) and the performed (synthesized version) piece. Participants were asked to to guess how "human" they sounded by comparing among them through an on-line survey~\footnote{You can find the survey here: \url{https://marcsiq2.github.io/}}. Results from 15 participants (Figure~\ref{fig:survey}) show that participants perceived the score more "human" than the actual performance and predicted score. However, we obtained similar results among the performed piece and the predicted one, which might indicate that our models predictions are close to actual human performances. Full survey results can be found at Appendix~\ref{app:survey}.
+For the qualitative survey, several synthesised pieces obtained by the models were compared to both the score (dead pan synthesis) and the performed (synthesised version) piece. Participants were asked to to guess how "human" they sounded by comparing among them through an on-line survey. Please see Appendix~\ref{app:survey} for a complete overview of the On-line survey.
+They were given 4 different tests with three excerpts each one (Performance, Prediction and Score synthesis) and were asked to rate from 0 to 100 the "humanness" of each one related to the other two.
 
-%or the qualitative survey, different MIDIs with the model's predictions are generated and then synthesized. We asked people to guess how "human" they were by comparing them with real performances through an on-line survey~\footnote{You can find the survey here: \url{https://marcsiq2.github.io/}}. We asked them to rate from 0 to 100 how "human" the audios where. Full results can be found at Appendix~\ref{app:survey}. Results from over 10 participants in figure~\ref{fig:survey} show that people find the score more "human" than the actual performance and predicted score. However, as we obtain very similar results for performance and prediction, we can say that our models predict very well the actual human performances. 
+In Table~\ref{tab:survey_results_redux} we can see the median and average punctuation (over 12 participants) that each concrete audio was given. As we can see, the on-line survey consisted on 4 different excerpts with three different synthesis each one (a Performance synthesis, a Predicted synthesis and a plain Score synthesis). As we saw on the previous Figure~\ref{fig:survey} values for Performance and Prediction are very close and there is a little preference for Score synthesised midis.
 
-Our assumption about why the score synthesis is graded better than the performance or the prediction is that the virtual instrument does not synthesize very well the guitar and when two notes are played with very short inter-onset time it creates very strange artefacts. Moreover, as it is a midi synthesis we are used to hear it very perfect as it always comes from a music score, so introducing those artefacts and time deviations can sound really strange to us, as if the score wasn't well written.
-
-\begin{figure}[ht!]
-\caption{Results of the on-line survey with performance, predicted and straight score synthesized midis.}
-\label{fig:survey}
+\input{Tables/results_survey_redux}
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=0.7\textwidth]{Figures/survey.pdf}
+\caption{Results of the on-line survey with performance, predicted and score synthesised midis.}
+\label{fig:survey}
 \end{figure}
+
+
+In Figure~\ref{fig:survey} we display all On-line survey results gathered by type. I shows that participants perceived the score synthesis more "human" than the actual performance and predicted score. However, we obtained similar results among the performed piece and the predicted one, which might indicate that our models predictions are close to actual human performances. Full survey results can be found at Appendix~\ref{app:survey}.
+
+
+
+\section{Discussion}
+\label{sec:discussion}
+Analysing the information provided in previous sections it can be seen that: in general, the algorithm which achieves better results using 10 fold Cross-validation is the Decision Trees, outperforming the three proposed K-NN, Support vector machines and artificial neural networks.
+
+Figures~\ref{fig:onset} and \ref{fig:energy} show an excerpt of \textit{Onset deviation} and \textit{Energy ratio} predictions obtained with Decision Trees, respectively. The curves show \textit{Onset deviation} with respect the score, and \textit{Energy ratio} with respect to the mean loudness . The blue lines correspond to the deviations performed by the musician in the performance, and the red lines correspond to the deviation predicted by the model. In both figures it is shown how the model follows in a consistent way the deviations done in time and energy by the performer.
+
+\input{Figures/onset}
+\input{Figures/energy}
+
+In Figure~\ref{fig:predicted_darn} we can see a piano-roll representation of the first 20 notes with predicted Onsets. As we can see the model follows the typical strumming guitar pattern by playing first the low strings and then the higher ones. This strumming pattern was visible in the performance transcription (see Figure~\ref{fig:darn_20n}) where notes were played (\textit{arpeggiated}) from low pitch to high pitch so we can also visually see that our models represent the performance actions done by the player.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/Darn_all_predicted.pdf}
+\caption{\textit{Darn that dream} first 20 notes predicted with piano-roll representation.}
+\label{fig:predicted_darn}
+\end{figure}
+
+
+In Figure~\ref{fig:comparison} we can see how feature selection helps us to improve the results obtained. In the Y-axis we plot the Correlation Coefficient while bars represent different datasets by using all features, the best subset or the 5 best ranked features. Displayed values are obtained from the bottom half of Table~\ref{tab:results_ml_cv}. We can see that by using best subset (red column) or 5 best ranked features (green column) we can improve the Correlation Coefficient by the same amount as we obtain the same results with both feature selection algorithms.
+\input{Figures/feature}
+
+This results are very important as they show that with just a few features (~5 features) we can obtain better results than with all features (35 features), so probably it makes no sense to research on adding more and more features to the system but to improve those that obtained a better ranking using feature selection.
+
+Our assumption about why the score synthesis is graded better than the performance or the prediction in the qualitative evaluation is that the virtual instrument does not synthesise very well the guitar and when two notes are played with very short inter-onset time it creates very strange artefacts. Moreover, as it is a midi synthesis we are used to hear it very perfect as it always comes from a music score, so introducing those artefacts and time deviations can sound really strange to us, as if the score wasn't well written.
+
+One of the comments received in the On-line survey was: 
+\begin{quote}
+\textit{I based my "humanness" mainly in the attack of the instrument, when the time between one attack and the next is really short, it feels robotic and hasty. I tried not to guide myself on synthesis but it is difficult. The best of my grades went to a somehow "slower" performance with more "rallentando" than the other versions.} 
+\end{quote}
+
+This comment reinforces our assumption that the problem of higher punctuation to the score synthesis is due to the MIDI synthesis and the artefacts added when two onsets are really close. As the user says, it is very difficult to rate "humanness" from a MIDI synthesis as the sound itself is not human. 
+
+Another comment on the survey reflects the difficulty of rating "humanness".  The "human" term could be some how ambiguous as it may refer to the smoothness of the performance or to the compositional aspect. In general we found that the qualitative evaluation is subjected to different perceptual aspects (mainly to the guitar synthesis) that are out of the main focus of this thesis work.  However, from this qualitative evaluation we can state two things: firstly, this is not a valid experiment to rate how "human" the predictions are as the users prefer score synthesis over synthesised human performances. Secondly, we think that this evaluation is a valid experiment in order to confirm that our predictions and models are really close to actual human performances. 
+
 
 
 \cleardoublepage

@@ -11,18 +11,20 @@ For this project, we have used several materials which can be divided into 3 cat
 
 \section*{Software}
 \begin{itemize}[noitemsep]
-\item ProTools HD 10: it was used in order to generate a mix the 6 strings channels. It also was used to synthesize midi both from the transcribed performances and from the predicted performance.
+\item ProTools HD 10: it was used in order to generate a mix the 6 strings channels. It also was used to synthesise midi both from the transcribed performances and from the predicted performance.
 \item MuseScore 2: the scores in XML format for the performances were written using MuseScore.
 \item Python: the code for transcribing guitar performances was developed by using Python.
 \item Essentia~\cite{bogdanov2013essentia}: we used a few algorithms (in order to transcribe guitar) from this open-source C++ library for audio analysis and audio-based music information retrieval.
-\item Matlab: the code for extracting the features from the performance and from the scores was developed by using Matlab.
+\item Matlab: the code for extracting the features from the performance and from the scores was developed using Matlab.
 \item MIDI Toolbox~\cite{eerola2004midi}: the MidiToolBox Library (implemented in Matlab) allowed us to process easily MIDI data.
 \item Weka Data Mining Software~\cite{hall2009weka}: it was used to train and test different machine learning models, to implement feature selection and to analyze the results.
+\item BealeJS~\cite{kraft2014beaqlejs} (browser based evaluation of audio quality and comparative listening environment) which provides a framework to create browser based listening tests and is purely based on open web standards like HTML5 and Javascript.
 \end{itemize}
 
 \section*{Data}
-For this work we used a set of three recordings done by Helena Bantula for her Master's thesis consisting of one recording of \textit{Darn that dream} by Jimmy Van Heusen and Eddie De.Lange and two recordings of \textit{Suite en la} by Manuel M. Ponce.
+For this work we used a set of three recordings done by Helena Bantula for her Master's thesis~\cite{bantula2016} consisting of one recording of \textit{Darn that dream} a Jazz standard by Jimmy Van Heusen and Eddie De.Lange and two recordings of \textit{Suite en la} a classical piece by Manuel M. Ponce. 
+Their corresponding scores where written using MuseScore and extracted as XML files.
 
-Their corresponging scores where written using Musescore and extracted as XML files.
+Please see Appendix~\ref{app:dataset} for a full review of the dataset, where to find it, how is it structured and which files are used.
 
 \cleardoublepage
